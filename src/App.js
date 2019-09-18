@@ -1,16 +1,45 @@
 import React, { Component } from "react";
 import "./css/pure-min.css";
 import "./css/side-menu.css";
-import axios from "axios";
+
+import api from "./services/api";
 
 class App extends Component {
   constructor() {
     super();
-    this.state = { lista: [] };
+    this.state = {lista : [],nome:'',email:'',senha:''};
+    this.enviaForm = this.enviaForm.bind(this);
+  this.setNome = this.setNome.bind(this);
+  this.setEmail = this.setEmail.bind(this);
+  this.setSenha = this.setSenha.bind(this);
   }
   componentWillMount() {
-    axios.get('http://cdc-react.herokuapp.com/api/autores')
-          .then(response => this.setState({ lista: response.data }));
+    this.loadAuthors();
+  }
+
+  loadAuthors = () => {
+    api
+      .get("/autores")
+      .then(response => this.setState({ lista: response.data }));
+  };
+
+  enviaForm(evento) {
+    evento.preventDefault();
+    console.log(evento);
+
+    // axios.post('http://cdc-react.herokuapp.com/api/autores', options)
+  }
+
+  setNome(evento) {
+    this.setState({ nome: evento.target.value });
+  }
+
+  setEmail(evento) {
+    this.setState({ email: evento.target.value });
+  }
+
+  setSenha(evento) {
+    this.setState({ senha: evento.target.value });
   }
 
   render() {
@@ -30,17 +59,17 @@ class App extends Component {
 
             <ul className="pure-menu-list">
               <li className="pure-menu-item">
-                <a href="#" className="pure-menu-link">
+                <a href="/" className="pure-menu-link">
                   Home
                 </a>
               </li>
               <li className="pure-menu-item">
-                <a href="#" className="pure-menu-link">
+                <a href="/" className="pure-menu-link">
                   Autor
                 </a>
               </li>
               <li className="pure-menu-item">
-                <a href="#" className="pure-menu-link">
+                <a href="/" className="pure-menu-link">
                   Livro
                 </a>
               </li>
@@ -54,18 +83,40 @@ class App extends Component {
           </div>
           <div className="content" id="content">
             <div className="pure-form pure-form-aligned">
-              <form className="pure-form pure-form-aligned">
+              <form
+                className="pure-form pure-form-aligned"
+                onSubmit={this.enviaForm.bind(this)}
+                method="post"
+              >
                 <div className="pure-control-group">
                   <label htmlFor="nome">Nome</label>
-                  <input id="nome" type="text" name="nome" value="" />
+                  <input
+                    id="nome"
+                    type="text"
+                    name="nome"
+                    value={this.state.name}
+                    onChange={this.setNome}
+                  />
                 </div>
                 <div className="pure-control-group">
                   <label htmlFor="email">Email</label>
-                  <input id="email" type="email" name="email" value="" />
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.setEmail} 
+                  />
                 </div>
                 <div className="pure-control-group">
                   <label htmlFor="senha">Senha</label>
-                  <input id="senha" type="password" name="senha" />
+                  <input
+                    id="senha"
+                    type="password"
+                    name="senha"
+                    value={this.state.senha}
+                    onChange={this.setSenha}
+                  />
                 </div>
                 <div className="pure-control-group">
                   <label></label>
@@ -87,16 +138,14 @@ class App extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                 {
-                   this.state.lista.map(function(autor) {
-                     return (
+                  {this.state.lista.map(function(autor) {
+                    return (
                       <tr key={autor.id}>
                         <td>{autor.nome}</td>
                         <td>{autor.email}</td>
                       </tr>
-                     );
-                   })
-                 }
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
