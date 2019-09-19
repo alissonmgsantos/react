@@ -1,5 +1,14 @@
 import axios from "axios";
 
-const api = axios.create({baseURL: 'http://cdc-react.herokuapp.com/api'});
+const options = {
+  headers: {
+    "Content-Type": "application/json"
+  }
+};
 
-  export default api;
+const api = axios.create(
+  { baseURL: "http://cdc-react.herokuapp.com/api" },
+  options
+);
+
+export default api;

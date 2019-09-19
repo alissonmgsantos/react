@@ -3,12 +3,8 @@ import "./css/pure-min.css";
 import "./css/side-menu.css";
 
 import api from "./services/api";
+import InputCustomizado from "./components/InputCustomizado";
 
-const options = {
-  headers: {
-    "Content-Type": "application/json"
-  }
-};
 class App extends Component {
   constructor() {
     super();
@@ -31,7 +27,7 @@ class App extends Component {
   enviaForm(evento) {
     evento.preventDefault();
     api
-      .post("http://cdc-react.herokuapp.com/api/autores", this.state, options)
+      .post("http://cdc-react.herokuapp.com/api/autores", this.state)
       .then(response => this.setState({ lista: response.data }));
   }
 
@@ -93,36 +89,33 @@ class App extends Component {
                 onSubmit={this.enviaForm.bind(this)}
                 method="post"
               >
-                <div className="pure-control-group">
-                  <label htmlFor="nome">Nome</label>
-                  <input
-                    id="nome"
-                    type="text"
-                    name="nome"
-                    value={this.state.name}
-                    onChange={this.setNome}
-                  />
-                </div>
-                <div className="pure-control-group">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.setEmail}
-                  />
-                </div>
-                <div className="pure-control-group">
-                  <label htmlFor="senha">Senha</label>
-                  <input
-                    id="senha"
-                    type="password"
-                    name="senha"
-                    value={this.state.senha}
-                    onChange={this.setSenha}
-                  />
-                </div>
+                <InputCustomizado
+                  label="Nome"
+                  id="nome"
+                  type="text"
+                  name="nome"
+                  value={this.state.name}
+                  onChange={this.setNome}
+                />
+
+                <InputCustomizado
+                  label="E-mail"
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.setEmail}
+                />
+
+                <InputCustomizado
+                  label="Senha"
+                  id="senha"
+                  type="password"
+                  name="senha"
+                  value={this.state.senha}
+                  onChange={this.setSenha}
+                />
+
                 <div className="pure-control-group">
                   <label></label>
                   <button
