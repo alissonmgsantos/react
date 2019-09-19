@@ -4,14 +4,19 @@ import "./css/side-menu.css";
 
 import api from "./services/api";
 
+const options = {
+  headers: {
+    "Content-Type": "application/json"
+  }
+};
 class App extends Component {
   constructor() {
     super();
-    this.state = {lista : [],nome:'',email:'',senha:''};
+    this.state = { lista: [], nome: "", email: "", senha: "" };
     this.enviaForm = this.enviaForm.bind(this);
-  this.setNome = this.setNome.bind(this);
-  this.setEmail = this.setEmail.bind(this);
-  this.setSenha = this.setSenha.bind(this);
+    this.setNome = this.setNome.bind(this);
+    this.setEmail = this.setEmail.bind(this);
+    this.setSenha = this.setSenha.bind(this);
   }
   componentWillMount() {
     this.loadAuthors();
@@ -25,9 +30,9 @@ class App extends Component {
 
   enviaForm(evento) {
     evento.preventDefault();
-    console.log(evento);
-
-    // axios.post('http://cdc-react.herokuapp.com/api/autores', options)
+    api
+      .post("http://cdc-react.herokuapp.com/api/autores", this.state, options)
+      .then(response => this.setState({ lista: response.data }));
   }
 
   setNome(evento) {
@@ -105,7 +110,7 @@ class App extends Component {
                     type="email"
                     name="email"
                     value={this.state.email}
-                    onChange={this.setEmail} 
+                    onChange={this.setEmail}
                   />
                 </div>
                 <div className="pure-control-group">
