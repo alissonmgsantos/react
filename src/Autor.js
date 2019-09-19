@@ -119,9 +119,12 @@ export default class AutorBox extends Component {
       .get("/autores")
       .then(response => this.setState({ lista: response.data }));
 
-    PubSub.subscribe("atualiza-lista-autores", function(topico, novaLista) {
-      this.setState({ lista: novaLista });
-    });
+    PubSub.subscribe(
+      "atualiza-lista-autores",
+      function(topico, novaLista) {
+        this.setState({ lista: novaLista });
+      }.bind(this)
+    );
   }
 
   render() {
